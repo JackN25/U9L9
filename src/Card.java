@@ -14,6 +14,8 @@ public class Card {
     private BufferedImage image;
     private Rectangle cardBox;
     private boolean highlight;
+    private ArrayList<Card> hand;
+    private ArrayList<Card> deck;
 
     public Card(String suit, String value) {
         this.suit = suit;
@@ -84,7 +86,7 @@ public class Card {
         }
     }
 
-    public static ArrayList<Card> buildDeck() {
+    public ArrayList<Card> buildDeck() {
         ArrayList<Card> deck = new ArrayList<Card>();
         String[] suits = {"clubs", "diamonds", "hearts", "spades"};
         String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
@@ -97,13 +99,37 @@ public class Card {
         return deck;
     }
 
-    public static ArrayList<Card> buildHand() {
-        ArrayList<Card> deck = Card.buildDeck();
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+
+    public void buildHand() {
+        ArrayList<Card> deck = getDeck();
         ArrayList<Card> hand = new ArrayList<Card>();
         for (int i = 0; i < 9; i++) {
             int r = (int)(Math.random()*deck.size());
             Card c = deck.remove(r);
             hand.add(c);
+        }
+        this.hand = hand;
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
+
+    public ArrayList<Card> getNewCard(int cardToChangeIndex, ArrayList<Card> previousHand) {
+        ArrayList<Card> deck = getDeck();
+        ArrayList<Card> hand = previousHand;
+        boolean newCardIsValid = false;
+        while (!newCardIsValid) {
+            int r = (int) (Math.random() * deck.size());
+            Card c = deck.remove(r);
+            if (!hand.contains(c)) {
+                hand.remove(cardToChangeIndex);
+                hand.add(cardToChangeIndex, c);
+                newCardIsValid = true;
+            }
         }
         return hand;
     }

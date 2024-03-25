@@ -38,7 +38,7 @@ class DrawPanel extends JPanel implements MouseListener {
             x = x + c.getImage().getWidth() + 20;
         }
         g.setFont(new Font("Courier New", Font.BOLD, 20));
-        g.drawString("GET NEW CARDS", 157, 320);
+        g.drawString("Play Another Game", 157, 320);
         g.drawRect((int)button.getX(), (int)button.getY(), (int)button.getWidth(), (int)button.getHeight());
     }
 

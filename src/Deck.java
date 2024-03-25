@@ -6,6 +6,7 @@ public class Deck {
 
 
     public void buildDeck() {
+        deck.clear();
         String[] suits = {"clubs", "diamonds", "hearts", "spades"};
         String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
         for (String s : suits) {

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Deck {
     private ArrayList<Card> deck = new ArrayList<Card>();
@@ -56,5 +57,17 @@ public class Deck {
 
     public ArrayList<Card> getHand() {
         return hand;
+    }
+
+    public boolean isGamePossible() {
+        HashMap<Card, String> currentHand = new HashMap<Card, String>();
+        for (Card c : hand) {
+            currentHand.put(c, c.getSuit());
+        }
+        if (currentHand.containsKey("J") && currentHand.containsKey("Q") && currentHand.containsKey("K")) {
+            return true;
+        }
+        if (currentHand.containsKey("A") && currentHand.containsKey("10") )
+        return false;
     }
 }

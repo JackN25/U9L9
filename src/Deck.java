@@ -1,4 +1,3 @@
-import javax.swing.text.Highlighter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,8 +10,9 @@ public class Deck {
     public void buildDeck() {
         deck.clear();
         String[] suits = {"clubs", "diamonds", "hearts", "spades"};
-        String[] values = {"02", "09", "A", "10"};
-        // String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
+        //uncomment this and comment the other initiator for values to rig the rng
+        //String[] values = {"02", "09", "A", "10"};
+        String[] values = {"02", "03", "04", "05", "06", "07", "08", "09", "10", "A", "J", "K", "Q"};
         for (String s : suits) {
             for (String v : values) {
                 Card c = new Card(s, v);

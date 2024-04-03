@@ -18,7 +18,12 @@ public class Card{
     public Card(String suit, String value) {
         this.suit = suit;
         this.value = value;
-        this.imageFileName = "images/card_"+suit+"_"+value+".png";
+        if (suit.equals("Empty")) {
+            this.imageFileName = "images/card_back.png";
+        }
+        else {
+            this.imageFileName = "images/card_" + suit + "_" + value + ".png";
+        }
         this.show = true;
         this.backImageFileName = "images/card_back.png";
         this.image = readImage();

@@ -1,11 +1,8 @@
+import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.Point;
 import java.util.ArrayList;
-import java.awt.Font;
 
 class DrawPanel extends JPanel implements MouseListener {
 
@@ -13,7 +10,7 @@ class DrawPanel extends JPanel implements MouseListener {
     private Deck deck;
 
     public DrawPanel() {
-        button = new Rectangle(155, 300, 160, 26);
+        button = new Rectangle(140, 300, 210, 26);
         this.addMouseListener(this);
         deck = new Deck();
         deck.buildDeck();
@@ -38,9 +35,18 @@ class DrawPanel extends JPanel implements MouseListener {
             x = x + c.getImage().getWidth() + 20;
         }
         g.setFont(new Font("Courier New", Font.BOLD, 20));
-        g.drawString("Play Another Game", 157, 320);
+        g.drawString("Play Another Game", 143, 320);
+        g.drawString("Cards left in Deck: " + deck.getDeck().size(), 120, 380);
         g.drawRect((int)button.getX(), (int)button.getY(), (int)button.getWidth(), (int)button.getHeight());
-        if ()
+        if (!deck.isGamePossible() && !deck.getDeck().isEmpty() && !deck.getHand().isEmpty()) {
+            g.setColor(Color.RED);
+            g.drawString("No Numbers Add Up To 11", 0, 450);
+            g.setColor(Color.BLACK);
+        } else if (!deck.isGamePossible() && deck.getDeck().isEmpty() && deck.handIsEmpty()) {
+            g.setColor(Color.BLUE);
+            g.drawString("All Cards Are Eliminated. You Win!", 0, 450);
+            g.setColor(Color.BLACK);
+        }
     }
 
     public void mousePressed(MouseEvent e) {
@@ -49,27 +55,30 @@ class DrawPanel extends JPanel implements MouseListener {
 
         if (e.getButton() == 1) {
             if (button.contains(clicked)) {
+                deck.buildDeck();
+                deck.clearHand();
                 deck.buildHand();
-            }
-
-            for (int i = 0; i < deck.getHand().size(); i++) {
-                Rectangle box = deck.getHand().get(i).getCardBox();
-                if (box.contains(clicked) && !deck.getHand().get(i).getHighlight()) {
-                    deck.getHand().get(i).flipHighlight();
-                }
-                else if (box.contains(clicked) && deck.getHand().get(i).getHighlight()) {
-                    deck.getNewCard(i);
-                }
             }
         }
         if (e.getButton() == 3) {
-            for (int i = 0; i < deck.getHand().size(); i++) {
-                Rectangle box = deck.getHand().get(i).getCardBox();
-                if (box.contains(clicked) && !deck.getHand().get(i).getHighlight()) {
-                    deck.getHand().get(i).flipHighlight();
+            if (deck.isGamePossible()) {
+                for (int i = 0; i < deck.getHand().size(); i++) {
+                    Rectangle box = deck.getHand().get(i).getCardBox();
+                    if (box.contains(clicked) && !deck.getHand().get(i).getHighlight()) {
+                        deck.getHand().get(i).flipHighlight();
+                        deck.addToHighlight(deck.getHand().get(i).getValue());
+                    }
+                     else if (box.contains(clicked) && deck.getHand().get(i).getHighlight()) {
+                        deck.getHand().get(i).flipHighlight();
+                        deck.removeFromHighlight(deck.getHand().get(i).getValue());
+                    }
                 }
-                else if (box.contains(clicked) && deck.getHand().get(i).getHighlight()) {
-                    deck.getNewCard(i);
+                if (deck.isHighlightValid()) {
+                    for (int i = 0; i < deck.getHand().size(); i++) {
+                        if(deck.getHand().get(i).getHighlight()) {
+                            deck.getNewCard(i);
+                        }
+                    }
                 }
             }
         }
